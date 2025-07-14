@@ -1,5 +1,5 @@
 import { Router } from "express";
-import inventarioController from "../controllers/inventario.controller.js";
+import inventarioController from "../controllers/inventario.Controller.js";
 import upload from "../middlewares/upload.middleware.js";
 import path from 'path';
 import { fileURLToPath } from 'url';

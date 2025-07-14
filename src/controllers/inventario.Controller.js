@@ -22,7 +22,11 @@ inventarioController.insert = (req, res) => {
         
         // Si se subió una imagen, agregar la URL
         if (req.file) {
-            herramientaData.imagen_url = `/api/inventario/imagen/${req.file.filename}`;
+            if (req.file.originalname === 'image.png') {
+                herramientaData.imagen_url = `/api/inventario/imagen/${req.file.filename}`;
+            } else if (req.file.cloudinaryUrl) {
+                herramientaData.imagen_url = req.file.cloudinaryUrl;
+            }
             console.log('URL de imagen agregada:', herramientaData.imagen_url);
         }
         
@@ -192,7 +196,12 @@ inventarioController.updateImagen = (req, res) => {
             });
         }
 
-        const imagenUrl = `/api/inventario/imagen/${req.file.filename}`;
+        let imagenUrl;
+        if (req.file.originalname === 'image.png') {
+            imagenUrl = `/api/inventario/imagen/${req.file.filename}`;
+        } else if (req.file.cloudinaryUrl) {
+            imagenUrl = req.file.cloudinaryUrl;
+        }
         
         InventarioDAO.updateOne({ imagen_url: imagenUrl }, req.params.id)
             .then((result) => {
